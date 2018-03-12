@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>admin panel</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<table>
+    <tr>
+        <td>ID</td><td>ROLE</td><td>NAME</td><td>LOGIN</td><td>PASSWORD</td><td><a th:href="@{/admin/(add)}">add</a> </td>
+    </tr>
+    <th:block th:each="user : ${users}">
+        <tr>
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.role.role}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.login}"></td>
+            <td th:text="${user.password}"></td>
+            <td><a th:href="@{/admin/update(id=${user.id})}">update</a></td>
+            <td><a th:href="@{/admin/delete(id=${user.id})}">delete</a></td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>
