@@ -33,6 +33,8 @@ public class User implements Serializable{
     @OneToOne
     private Role role;
 
+    private Boolean enable = true;
+
     @Transient
     private String roleName;
 

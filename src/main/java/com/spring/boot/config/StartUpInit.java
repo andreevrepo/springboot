@@ -25,8 +25,8 @@ public class StartUpInit {
     @PostConstruct
     public void init(){
         User user = new User("admin","admin", "admin");
-        Role roleAdmin = new Role("admin");
-        Role roleUser = new Role("user");
+        Role roleAdmin = new Role("ADMIN");
+        Role roleUser = new Role("USER");
         user.setRole(roleAdmin);
         roleService.add(roleAdmin);
         roleService.add(roleUser);

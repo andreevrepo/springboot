@@ -3,6 +3,7 @@ package com.spring.boot.service;
 import com.spring.boot.dao.UserDAO;
 import com.spring.boot.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,15 +18,18 @@ import java.util.Optional;
 @Transactional
 public class UserService implements ServiceI<User> {
 
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     private UserDAO dao;
 
     @Autowired
-    public UserService(UserDAO dao) {
+    public UserService(UserDAO dao,BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.dao = dao;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
     public void add(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         dao.saveAndFlush(user);
     }
 
@@ -36,6 +40,7 @@ public class UserService implements ServiceI<User> {
 
     @Override
     public void update(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         dao.saveAndFlush(user);
     }
 
