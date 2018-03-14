@@ -3,9 +3,8 @@ package com.spring.boot.service;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Created by AndrewPC on 07.03.2018.
- * Time is: 19:15
+/*
+    Сервис включающий в себя общую логику для crud операций из DAO
  */
 public interface ServiceI<E> {
     void add(E e);

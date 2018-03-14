@@ -4,18 +4,20 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * Created by AndrewPC on 05.03.2018.
- * Time is: 16:04
+/*
+ * @Entity - означает, что Класс является Сущностью и относится к таблице в бд
+ *
  */
 
-
 @Entity
-public class Role implements Serializable {
+public class Role {
     private static final long serialVersionUID = 9091673488504929047L;
+    //Требования
 
+    //У сущности обязан быть default конструктор
     public Role(){}
 
+    //Обязан быть хотя бы один @Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -48,8 +50,7 @@ public class Role implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Role)) return false;
         Role role1 = (Role) o;
-        return id == role1.id &&
-                Objects.equals(role, role1.role);
+        return id == role1.id && Objects.equals(role, role1.role);
     }
 
     @Override

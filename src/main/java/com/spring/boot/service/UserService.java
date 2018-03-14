@@ -4,32 +4,36 @@ import com.spring.boot.dao.UserDAO;
 import com.spring.boot.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-/**
- * By AndrewPC on 11.03.2018, in 23:42
+/*
+    Реализация Service
  */
 
 @Service
 @Transactional
 public class UserService implements ServiceI<User> {
-
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    /*
+        Внедряем слой DAO, в котором spring-data-jpa реализовал все за нас
+        Также внедряем passwordEncoder для добавления и модификации пароля в бд
+     */
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private UserDAO dao;
 
     @Autowired
-    public UserService(UserDAO dao,BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserDAO dao) {
         this.dao = dao;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
     public void add(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         dao.saveAndFlush(user);
     }
 
@@ -40,10 +44,14 @@ public class UserService implements ServiceI<User> {
 
     @Override
     public void update(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         dao.saveAndFlush(user);
     }
 
+    /*
+        Метод findById возвращает Optional<User>
+        Transactional(readOnly = true) указывает, что метод не нуждается в транзакции, он просто возвращает значение.
+     */
     @Transactional(readOnly = true)
     @Override
     public Optional<User> get(long id) {

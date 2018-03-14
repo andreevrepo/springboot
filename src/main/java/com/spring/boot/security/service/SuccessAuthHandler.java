@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 
-/**
- * Логика выбора url взависимости от роли
+/*
+ * Логика выбора url взависимости от роли после успешной аутентификации
  */
 @Service
 public class SuccessAuthHandler implements AuthenticationSuccessHandler {
@@ -24,11 +24,19 @@ public class SuccessAuthHandler implements AuthenticationSuccessHandler {
 
     private void handle(HttpServletResponse httpServletResponse, Authentication authentication) throws IOException{
         String url = choiceUrl(authentication);
+        //Перенаправляем на выбранный url
         httpServletResponse.sendRedirect(url);
     }
-
+    /*
+        Authentication содержит данные пользователя
+     */
     private String choiceUrl(Authentication authentication) {
+        /*
+            Обычно в логике программ существует не одна роль ,а несколько, но у нас возможно иметь только одну роль
+            Поэтому, мы получаем коллекцию Ролей из класса Authentication
+         */
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        //Взависимости от роли выбираем возвращаем соответствующий url для перенаправления
         if(authorities.contains(new SimpleGrantedAuthority("ADMIN"))){
             return "/admin";
         }else if(authorities.contains(new SimpleGrantedAuthority("USER"))){

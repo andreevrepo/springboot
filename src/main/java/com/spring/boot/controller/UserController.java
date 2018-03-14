@@ -8,9 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-/**
- * By AndrewPC on 12.03.2018, in 11:24
- */
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -22,6 +19,9 @@ public class UserController {
         this.userService = userService;
     }
 
+    /*
+        Запрос /user закладывает в модель List<User> и возвращает view user.html
+     */
     @GetMapping
     public String user(Model model){
         model.addAttribute("users", userService.getAll());

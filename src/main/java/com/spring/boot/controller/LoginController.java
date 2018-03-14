@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class LoginController {
 
+    //возвращает форму
     @GetMapping
     public String login(){
         return "/login";

@@ -5,19 +5,30 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * Created by AndrewPC on 12.01.2018.
- * Time is: 18:27
+/*
+ * @Entity - означает, что Класс является Сущностью и относится к таблице в бд
+ *
  */
 
 @Entity
-public class User implements Serializable{
+public class User{
     private static final long serialVersionUID = 1723614580571357619L;
+    //Требования
 
+    //У сущности обязан быть default конструктор
+    public User(){}
+
+    //Обязан быть хотя бы один @Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
+
+    /*
+        К не помеченым полям будут применены настройки по умолчанию
+        имя переменной = имя поля в таблице бд
+        тип переменной = соответствующий тип в бд(VARCHAR, BIGINT и т.д)
+     */
 
     @Column(unique = true, nullable = false)
     private String login;
@@ -25,37 +36,25 @@ public class User implements Serializable{
     @Column(nullable = false)
     private String password;
 
-    //TODO подробности работы JoinTable OneToOne
+    /*
+        @JoinTable создает связывающую таблицу
+        joinColumns = @JoinColumn(name="название ключа User в связывающей таблице", referencedColumnName ="ссылка на имя ключа User")
+        inverseJoinColumns = @JoinColumn(name="аналогично только с Role", referencesColumnName ="аналогично с Role")
+        В итоге создаем связывающую таблицу, в которой будут содержаться ключи User и Role
+     */
     @JoinTable(name = "join_role",
             joinColumns = @JoinColumn(name= "user_id" ,referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name= "role_id", referencedColumnName = "id")
     )
+    //Связь один к одному
     @OneToOne
     private Role role;
+
 
     private Boolean enable = true;
 
     @Transient
     private String roleName;
-
-    @SuppressWarnings("for hibernate")
-    public User(){}
-
-    //Constructor for result
-    public User(long id, Role role, String name, String login, String password) {
-        this.id = id;
-        this.name = name;
-        this.login = login;
-        this.password = password;
-        this.role = role;
-    }
-    public User(long id, String name, String login, String password) {
-        this.id = id;
-        this.name = name;
-        this.login = login;
-        this.password = password;
-        this.role = role;
-    }
 
     //Constructor for set
     public User(String name, String login, String password) {
