@@ -32,11 +32,11 @@ public class SuccessAuthHandler implements AuthenticationSuccessHandler {
      */
     private String choiceUrl(Authentication authentication) {
         /*
-            Обычно в логике программ существует не одна роль ,а несколько, но у нас возможно иметь только одну роль
+            По дефолту можно иметь более одной роли, но у нас роль одна
             Поэтому, мы получаем коллекцию Ролей из класса Authentication
          */
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        //Взависимости от роли выбираем возвращаем соответствующий url для перенаправления
+        //В зависимости от роли выбираем возвращаем соответствующий url для перенаправления
         if(authorities.contains(new SimpleGrantedAuthority("ADMIN"))){
             return "/admin";
         }else if(authorities.contains(new SimpleGrantedAuthority("USER"))){
